@@ -9,6 +9,8 @@ import escodegen from "escodegen";
 import { parseScript } from "esprima";
 import SWP from "swagger-parser";
 
+
+
 export class OASClientFromSpec {
   async generate(spec: unknown): Promise<string> {
     // @ts-expect-error - SWP types are wrong
@@ -18,7 +20,7 @@ export class OASClientFromSpec {
       ...this.buildImports(),
       ...this.buildSDKExport(this.buildClientMethods(dereferenced)),
     ]);
-
+   
     const code = escodegen.generate(program, {
       format: {
         compact: true,
@@ -89,9 +91,12 @@ export class OASClientFromSpec {
   }
 
   buildClientMethodDefinition(schema: PropertyKind[]): FunctionExpressionKind {
+    let producer = b.identifier("producer");
+    producer.optional = true;
+    
     return b.functionExpression(
       null,
-      [b.identifier("producer")],
+      [producer],
       b.blockStatement([
         b.variableDeclaration("const", [
           b.variableDeclarator(
