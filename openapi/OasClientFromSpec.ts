@@ -111,7 +111,7 @@ export class OASClientFromSpec {
             b.identifier("result"),
             b.callExpression(b.identifier("produce"), [
               b.identifier("faked"),
-              b.identifier("producer"),
+              producer,
             ])
           ),
         ]),
